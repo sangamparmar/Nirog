@@ -42,6 +42,9 @@ WORKDIR /var/www/html
 # Copy existing application directory contents
 COPY . /var/www/html
 
+# Create .env file if it doesn't exist
+RUN if [ ! -f .env ]; then cp .env.example .env || echo "APP_NAME=Pharmacy\nAPP_ENV=production\nAPP_KEY=\nAPP_DEBUG=false\nAPP_URL=http://localhost\n\nLOG_CHANNEL=stack\n\nDB_CONNECTION=mysql\nDB_HOST=127.0.0.1\nDB_PORT=3306\nDB_DATABASE=laravel\nDB_USERNAME=root\nDB_PASSWORD=\n\nCACHE_DRIVER=file\nQUEUE_CONNECTION=sync\nSESSION_DRIVER=file\nSESSION_LIFETIME=120" > .env; fi
+
 # Set correct ownership
 RUN chown -R www-data:www-data /var/www/html
 
