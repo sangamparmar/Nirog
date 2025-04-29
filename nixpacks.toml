@@ -1,1 +1,11 @@
+[phases.setup]
+nixPkgs = ["php81", "php81Extensions.pdo_mysql", "nodejs_18", "npm", "mysql80"]
 
+[phases.install]
+cmds = ["composer install --no-dev", "npm ci"]
+
+[phases.build]
+cmds = ["npm run prod", "php artisan config:cache", "php artisan route:cache", "php artisan view:cache"]
+
+[start]
+cmd = "php artisan serve --host=0.0.0.0 --port=$PORT"
