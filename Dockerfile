@@ -11,12 +11,13 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     libfreetype6-dev \
     libjpeg62-turbo-dev \
+    libzip-dev \
     nodejs \
     npm
 
 # Install PHP extensions
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo_mysql mbstring exif gd
+    && docker-php-ext-install pdo_mysql mbstring exif gd zip
 
 # Enable Apache mod_rewrite
 RUN a2enmod rewrite
@@ -40,10 +41,13 @@ RUN chmod -R 777 storage bootstrap/cache
 RUN if [ ! -f .env ]; then cp -n .env.example .env || touch .env; fi
 
 # Install dependencies
-RUN composer install --no-interaction --no-dev --optimize-autoloader
+RUN composer install --no-interaction --no-dev --optimize-autoloader --ignore-platform-reqs
 
 # Generate application key
 RUN php artisan key:generate
+
+# Build frontend assets
+RUN npm ci && npm run prod
 
 # Expose port
 EXPOSE 80
