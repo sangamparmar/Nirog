@@ -1,5 +1,5 @@
 [phases.setup]
-nixPkgs = ["php81", "php81Extensions.pdo_mysql", "nodejs_18", "npm", "mysql80"]
+nixPkgs = ["php81", "php81Extensions.pdo_mysql", "php81Extensions.curl", "php81Extensions.mbstring", "php81Extensions.openssl", "php81Extensions.tokenizer", "php81Extensions.xml", "php81Extensions.ctype", "php81Extensions.fileinfo", "nodejs_18", "npm"]
 
 [phases.install]
 cmds = ["composer install --no-dev", "npm ci"]
@@ -8,4 +8,8 @@ cmds = ["composer install --no-dev", "npm ci"]
 cmds = ["npm run prod", "php artisan config:cache", "php artisan route:cache", "php artisan view:cache"]
 
 [start]
-cmd = "php artisan serve --host=0.0.0.0 --port=$PORT"
+cmd = "php artisan serve --host=0.0.0.0 --port=${PORT:-8000}"
+
+[variables]
+APP_ENV = "production"
+APP_DEBUG = "false"
