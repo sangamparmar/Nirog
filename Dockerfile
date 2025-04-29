@@ -13,17 +13,29 @@ RUN apt-get update && apt-get install -y \
     libjpeg62-turbo-dev \
     libzip-dev \
     nodejs \
-    npm
+    npm \
+    ssl-cert
 
 # Install PHP extensions
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install pdo_mysql mbstring exif gd zip
 
-# Enable Apache mod_rewrite
-RUN a2enmod rewrite
+# Enable Apache modules
+RUN a2enmod rewrite ssl headers
 
 # Set document root to public folder
 RUN sed -i 's/DocumentRoot \/var\/www\/html/DocumentRoot \/var\/www\/html\/public/g' /etc/apache2/sites-available/000-default.conf
+
+# Enable SSL in default Apache site
+RUN sed -i 's/VirtualHost \*:80/VirtualHost *:80/' /etc/apache2/sites-available/000-default.conf \
+    && sed -i 's/<\/VirtualHost>/\n\tRedirectPermanent \/ https:\/\/${HTTP_HOST}\/\n<\/VirtualHost>/' /etc/apache2/sites-available/000-default.conf
+
+# Create SSL config file
+RUN cp /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-available/default-ssl.conf.orig \
+    && sed -i 's/DocumentRoot \/var\/www\/html/DocumentRoot \/var\/www\/html\/public/g' /etc/apache2/sites-available/default-ssl.conf \
+    && sed -i 's/#SSLCertificateFile/SSLCertificateFile/g' /etc/apache2/sites-available/default-ssl.conf \
+    && sed -i 's/#SSLCertificateKeyFile/SSLCertificateKeyFile/g' /etc/apache2/sites-available/default-ssl.conf \
+    && a2ensite default-ssl
 
 # Get composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -49,8 +61,8 @@ RUN php artisan key:generate
 # Build frontend assets
 RUN npm ci && npm run prod
 
-# Expose port
-EXPOSE 80
+# Expose ports
+EXPOSE 80 443
 
 # Start Apache
 CMD ["apache2-foreground"]
