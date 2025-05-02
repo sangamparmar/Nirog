@@ -19,12 +19,11 @@
 # Installation
 - Watch the installation process on youtube below.
 
-[![youtube thumbnail](https://img.youtube.com/vi/nhMaD6MhJzU/0.jpg)](https://www.youtube.com/watch?v=nhMaD6MhJzU) 
 
  Or Follow these steps to install the application.
 1. Clone the Repository
 ```
-git clone https://github.com/MusheAbdulHakim/Pharmacy-management-system.git
+git clone https://github.com/sangamparmar/Nirog
 ```
 2. Go to project directory
 
@@ -89,7 +88,6 @@ http://127.0.0.1:8000
  password: admin
 ```
 
-Theme: https://themeforest.net/item/doccure-doctor-appointment-booking-system-bootstrap-angular-template/28201296  
 Developed by: Sangam & Ayush
 
 # Usage
@@ -182,15 +180,6 @@ Developed by: Sangam & Ayush
 5. You can start selling the product.
 
 6. When you are notified of the stock, just update the purchased product quantity.
-Or make a new purchase.
-
-![ScreenShot](screenshots/login.png?raw=true "Login page")
-
-![Dashboard](screenshots/dashboard.png?raw=true "Dashbaord page")
-
-![Profile](screenshots/user-profile.png?raw=true "User profile")
-
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 <p align="center">
 @@ -242,6 +44,9 @@ We would like to extend our thanks to the following sponsors for funding Laravel
